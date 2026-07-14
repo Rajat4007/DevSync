@@ -56,7 +56,7 @@ function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
   const socketRef = useRef(null);
 
-  // 1. 🔥 FUNCTION KO BAHAR NIKALA (useCallback ke sath taaki memory leak na ho)
+  // 1. Function ko bahr nikl lenge  (useCallback ke sath taaki memory leak na ho)
   const fetchDashboardData = useCallback(async () => {
     try {
       setLoadingProjects(true);
@@ -154,7 +154,7 @@ function Dashboard() {
     }
   }, [searchParams]);
 
-  // 4. 🔥 SOCKET SETUP (Ab seedha fetchDashboardData call hoga)
+  // 4. SOCKET SETUP (Ab seedha fetchDashboardData call hoga)
   useEffect(() => {
     if (!user) return;
     socketRef.current = io(API_BASE_URL, { transports: ["websocket"] });
@@ -225,7 +225,7 @@ function Dashboard() {
       await axios.delete(`${API_BASE_URL}/api/projects/${projectId}`, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
-      // 🔥 YAHAN FILTER KI JAGAH FETCH LAGAYA (Taaki graphs bhi update ho)
+      
       fetchDashboardData();
     } catch (err) {
       console.error("Delete failed: ", err.response?.data || err);
@@ -257,7 +257,7 @@ function Dashboard() {
     <div className="min-h-screen bg-[#0a0a0f] font-sans text-white">
       <Sidebar />
 
-      <div className="md:pl-[240px]">
+      <div className="md:pl-60">
         <Navbar pageTitle="Project Dashboard" />
 
         <main className="p-4 md:p-6 max-w-6xl mx-auto w-full">
@@ -276,25 +276,25 @@ function Dashboard() {
               { label: "In Progress", value: stats.inProgress },
               { label: "Completed", value: stats.completed },
             ].map((metric) => (
-              <div key={metric.label} className="rounded-2xl border border-white/[0.06] bg-[#111118] p-5 relative overflow-hidden group">
+              <div key={metric.label} className="rounded-2xl border border-white/6 bg-[#111118] p-5 relative overflow-hidden group">
                 <div className="text-[12px] font-semibold uppercase tracking-wider text-white/35">
                   {metric.label}
                 </div>
                 <div className="text-3xl font-bold text-white mt-2">
                   {metric.value}
                 </div>
-                <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-violet-600/[0.02] rounded-full blur-md group-hover:bg-violet-600/[0.06] transition-all duration-300" />
+                <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-violet-600/2 rounded-full blur-md group-hover:bg-violet-600/6 transition-all duration-300" />
               </div>
             ))}
           </div>
 
           {!chartLoading && projects.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-              <div className="rounded-2xl border border-white/[0.06] bg-[#111118] p-5">
+              <div className="rounded-2xl border border-white/6 bg-[#111118] p-5">
                 <h3 className="text-[13px] font-bold text-white mb-4 uppercase tracking-wider">
                   Task Distribution
                 </h3>
-                <div className="h-[220px] w-full">
+                <div className="h-55 w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie data={pieData} cx="50%" cy="50%" innerRadius={55} outerRadius={80} paddingAngle={5} dataKey="value" stroke="none">
@@ -316,11 +316,11 @@ function Dashboard() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-white/[0.06] bg-[#111118] p-5">
+              <div className="rounded-2xl border border-white/6 bg-[#111118] p-5">
                 <h3 className="text-[13px] font-bold text-white mb-4 uppercase tracking-wider">
                   Tasks per Project
                 </h3>
-                <div className="h-[220px] w-full">
+                <div className="h-55 w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={barData} margin={{ top: 10, right: 0, left: -25, bottom: 0 }}>
                       <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: "#ffffff40" }} dy={10} />
@@ -346,7 +346,7 @@ function Dashboard() {
               <Loader2 className="w-6 h-6 text-violet-500 animate-spin" />
             </div>
           ) : projects.length === 0 ? (
-            <div onClick={() => setIsModalOpen(true)} className="rounded-2xl border border-dashed border-white/[0.08] bg-[#111118]/40 p-12 text-center cursor-pointer hover:border-violet-500/30 hover:bg-violet-500/[0.02] transition-all duration-200 group">
+            <div onClick={() => setIsModalOpen(true)} className="rounded-2xl border border-dashed border-white/8 bg-[#111118]/40 p-12 text-center cursor-pointer hover:border-violet-500/30 hover:bg-violet-500/2 transition-all duration-200 group">
               <FolderKanban className="w-8 h-8 text-white/10 group-hover:text-violet-400/40 mx-auto mb-3 transition-colors" />
               <p className="text-[13px] font-medium text-white/20 group-hover:text-white/40 transition-colors">
                 No projects yet — click to create one
@@ -365,7 +365,7 @@ function Dashboard() {
                       </div>
                       
                       <div className="flex items-center gap-3">
-                        <span className="text-[10px] font-mono text-white/20 bg-white/[0.03] border border-white/[0.05] px-2 py-1 rounded-lg">
+                        <span className="text-[10px] font-mono text-white/20 bg-white/3 border border-white/5 px-2 py-1 rounded-lg">
                           {project.taskCount ?? 0} tasks
                         </span>
 
@@ -391,7 +391,7 @@ function Dashboard() {
                       {project.description || "No description provided."}
                     </p>
 
-                    <div className="mt-4 pt-3 border-t border-white/[0.04] flex items-center justify-between text-[11px] text-white/25">
+                    <div className="mt-4 pt-3 border-t border-white/4 flex items-center justify-between text-[11px] text-white/25">
                       <span>
                         {project.createdAt ? new Date(project.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "Recently created"}
                       </span>
@@ -403,7 +403,7 @@ function Dashboard() {
                 );
               })}
 
-              <div onClick={() => setIsModalOpen(true)} className="rounded-2xl border border-dashed border-white/[0.06] bg-transparent p-5 cursor-pointer hover:border-violet-500/25 hover:bg-violet-500/[0.02] transition-all duration-200 group flex flex-col items-center justify-center gap-2 min-h-[140px]">
+              <div onClick={() => setIsModalOpen(true)} className="rounded-2xl border border-dashed border-white/6 bg-transparent p-5 cursor-pointer hover:border-violet-500/25 hover:bg-violet-500/2 transition-all duration-200 group flex flex-col items-center justify-center gap-2 min-h-35">
                 <Plus className="w-5 h-5 text-white/15 group-hover:text-violet-400/50 transition-colors" />
                 <span className="text-[12px] text-white/15 group-hover:text-white/30 transition-colors font-medium">
                   New Project
@@ -416,7 +416,7 @@ function Dashboard() {
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md rounded-2xl border border-white/[0.06] bg-[#111118] p-6 shadow-2xl relative">
+          <div className="w-full max-w-md rounded-2xl border border-white/6 bg-[#111118] p-6 shadow-2xl relative">
             <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors cursor-pointer">
               <X className="w-4 h-4" />
             </button>
@@ -424,11 +424,11 @@ function Dashboard() {
             <form onSubmit={handleCreateProject} className="space-y-4">
               <div>
                 <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/40 mb-1.5">Project Name</label>
-                <input type="text" value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)} placeholder="e.g., DevSync Backend Sprint" className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] px-4 py-2.5 text-[13px] text-white placeholder-white/20 outline-none focus:border-violet-500 transition-colors" required autoFocus />
+                <input type="text" value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)} placeholder="e.g., DevSync Backend Sprint" className="w-full rounded-xl bg-white/3 border border-white/8 px-4 py-2.5 text-[13px] text-white placeholder-white/20 outline-none focus:border-violet-500 transition-colors" required autoFocus />
               </div>
               <div>
                 <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/40 mb-1.5">Description <span className="normal-case text-white/20 tracking-normal font-normal">(optional)</span></label>
-                <textarea value={newProjectDesc} onChange={(e) => setNewProjectDesc(e.target.value)} placeholder="What is this project about?" rows="3" className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] px-4 py-2.5 text-[13px] text-white placeholder-white/20 outline-none focus:border-violet-500 transition-colors resize-none" />
+                <textarea value={newProjectDesc} onChange={(e) => setNewProjectDesc(e.target.value)} placeholder="What is this project about?" rows="3" className="w-full rounded-xl bg-white/3 border border-white/8 px-4 py-2.5 text-[13px] text-white placeholder-white/20 outline-none focus:border-violet-500 transition-colors resize-none" />
               </div>
               <div className="flex justify-end gap-3 pt-2">
                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 rounded-xl text-[13px] font-medium text-white/50 hover:text-white transition-colors cursor-pointer">Cancel</button>

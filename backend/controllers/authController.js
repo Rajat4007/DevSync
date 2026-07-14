@@ -4,7 +4,7 @@ const axios = require('axios');
 const bcrypt = require('bcryptjs');
 const Notification = require('../models/Notification')
 
-// 🔑 Helper Function: JWT Token Generate karne ke liye
+//  Helper Function: JWT Token Generate karne ke liye
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: '30d', // Token 30 dino tak valid rahega
@@ -123,7 +123,7 @@ const googleLogin = async (req,res) => {
 };
 
 const githubLogin = async (req,res) => {
-    console.log("🚀 BACKEND: GitHub Route Hit Hua! Code mila:", req.body.code);
+    
     try {
         const {code} = req.body;
         
@@ -191,7 +191,7 @@ const githubLogin = async (req,res) => {
 };
 
 const updateProfilePic = async (req,res) => {
-    console.log("🚀 BACKEND HIT HUA! File Data:", req.file);
+    
     try {
         //multer upload krne ke badd req.file mai data bhejdeta hia
         if(!req.file){
@@ -208,7 +208,7 @@ const updateProfilePic = async (req,res) => {
             {returnDocument:'after'}
         ).select("-password");
 
-        // 🔥 SOCKET: Doosre browser/tab ko live update bhejo
+        // SOCKET: Doosre browser/tab ko live update bhejo
         if (req.io) {
             req.io.to(String(req.user._id)).emit('profile-updated', updatedUser.profilePic);
         }
@@ -237,7 +237,7 @@ const deleteProfilePic = async (req, res) => {
       { returnDocument: 'after' }
     ).select("-password");
 
-    // 🔥 SOCKET: Doosre browser/tab ko live update bhejo
+    //SOCKET: Doosre browser/tab ko live update bhejo
         if (req.io) {
             req.io.to(String(req.user._id)).emit('profile-updated', updatedUser.profilePic);
         }
@@ -281,7 +281,7 @@ const updateProfile = async (req, res) => {
     // Naye data ko database mein save kar do
     const updatedUser = await user.save();
 
-    // 🔥 REAL NOTIFICATION YAHAN CREATE HOGI 🔥
+    // REAL NOTIFICATION YAHAN CREATE HOGI
     if (actionText !== "") {
       await Notification.create({
         user: userId,

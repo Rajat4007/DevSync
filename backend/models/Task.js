@@ -20,7 +20,7 @@ const TaskSchema = new mongoose.Schema({
         ref: 'Project', // Kis project ka task hai
         required: true
     },
-    priority: {                              // ✅ yeh add karo
+    priority: {                              
         type: String,
         enum: ['low', 'medium', 'high'],
         default: 'medium'

@@ -4,11 +4,11 @@ import axios from "axios";
 // Context Create kiya
 export const AuthContext = createContext();
 
-// Vite ka environment variable nikaala (With Fallback)
+// Vite ka environment variable nikaala 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
 export const AuthProvider = ({ children }) => {
-  // Testing ke liye tumhara dummy data (Production pe useState(null) kar dena)
+  
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 

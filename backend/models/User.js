@@ -39,7 +39,7 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-// 🔥 Pre-save Hook: Password ko save karne se pehle encrypt (hash) karne ke liye
+//  Pre-save Hook: Password ko save karne se pehle encrypt (hash) karne ke liye
 UserSchema.pre('save', async function () {
   // Agar password change nahi hua hai (sirf naam change hua hai), toh bina encrypt kiye wapas jao
   if (!this.isModified('password')) {
@@ -55,7 +55,7 @@ UserSchema.pre('save', async function () {
   }
 });
 
-// 🔑 Method: Login ke waqt entered password aur hashed password ko compare karne ke liye
+// Method: Login ke waqt entered password aur hashed password ko compare karne ke liye
 UserSchema.methods.matchPassword = async function(enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };

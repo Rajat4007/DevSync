@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
-// 🛡️ Guard 1: Sirf Logged In Users ke liye (Dashboard, Kanban ke liye)
+//  Guard 1: Sirf Logged In Users ke liye (Dashboard, Kanban ke liye)
 export const ProtectedRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
 
@@ -23,7 +23,7 @@ export const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-// 🔓 Guard 2: Sirf Unauthenticated Users ke liye (Login, Register ke liye)
+// Guard 2: Sirf Unauthenticated Users ke liye (Login, Register ke liye)
 export const PublicRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
 

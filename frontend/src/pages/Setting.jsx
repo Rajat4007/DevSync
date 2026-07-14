@@ -16,7 +16,7 @@ function Settings() {
   // Password Change Logic
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
-    if (password.length < 6) return alert("Password kam se kam 6 characters ka hona chahiye!");
+    if (password.length < 6) return alert("Password must be at least 6 characters long");
 
     try {
       setIsSaving(true);
@@ -24,7 +24,7 @@ function Settings() {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setPassword("");
-      alert("Password successfully updated! 🔒");
+      alert("Password successfully updated");
       navigate("/dashboard");
     } catch (error) {
       alert("Failed to update password.");
@@ -36,7 +36,7 @@ function Settings() {
   // Account Delete Logic
   const handleDeleteAccount = async () => {
     const confirmDelete = window.confirm(
-      "DANGER: Kya tum sach mein apna account delete karna chahte ho? Tumhara saara data hamesha ke liye udd jayega!"
+      "Do you want to DELETE your Account Permanently??"
     );
     if (!confirmDelete) return;
 
@@ -44,7 +44,7 @@ function Settings() {
       await axios.delete(`${API_BASE_URL}/api/auth/delete-account`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
-      alert("Account permanently deleted. Goodbye! 👋");
+      alert("Account permanently deleted. Goodbye!");
       if (logout) logout();
       navigate("/login");
     } catch (error) {
@@ -57,7 +57,7 @@ function Settings() {
       <div className="w-full max-w-md space-y-6">
         
         {/* Update Password Section */}
-        <div className="bg-[#111118] border border-white/[0.06] rounded-2xl p-8 shadow-xl">
+        <div className="bg-[#111118] border border-white/6 rounded-2xl p-8 shadow-xl">
           <h2 className="text-xl font-bold mb-6 tracking-wide flex items-center gap-2">
             <Lock className="w-5 h-5 text-violet-400" /> Security Settings
           </h2>
@@ -70,7 +70,7 @@ function Settings() {
                   type="password" 
                   value={password} 
                   onChange={(e) => setPassword(e.target.value)} 
-                  className="w-full bg-white/[0.02] border border-white/[0.08] focus:border-violet-500/50 rounded-xl py-2.5 pl-10 pr-4 text-sm outline-none transition-colors" 
+                  className="w-full bg-white/2 border border-white/8 focus:border-violet-500/50 rounded-xl py-2.5 pl-10 pr-4 text-sm outline-none transition-colors" 
                   placeholder="Enter new password"
                 />
               </div>

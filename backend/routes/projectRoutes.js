@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { createProject, getProjects,getProjectStats, inviteUserToProject, getProjectById, deleteProject } = require('../controllers/projectController');
-const { protect } = require('../middleware/authMiddleware'); // Gatekeeper import kiya
+const { protect } = require('../middleware/authMiddleware'); 
 
 
 // router.route() se hum ek hi path par alag-alag HTTP methods map kar sakte hain

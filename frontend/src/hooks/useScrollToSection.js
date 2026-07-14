@@ -11,7 +11,7 @@ export function useScrollToSection() {
       const el = document.getElementById(pendingScroll.current);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        window.history.replaceState(null, '', '/'); // ← URL clean karo
+        window.history.replaceState(null, '', '/');  
       }
       pendingScroll.current = null;
     }
@@ -23,7 +23,7 @@ export function useScrollToSection() {
         const el = document.getElementById(sectionId);
         if (el) {
           el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          window.history.replaceState(null, '', '/'); // ← URL clean karo
+          window.history.replaceState(null, '', '/'); 
         }
       } else {
         pendingScroll.current = sectionId;

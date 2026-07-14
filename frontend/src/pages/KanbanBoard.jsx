@@ -29,14 +29,14 @@ const getPriorityStyle = (p) => {
   return "bg-green-500/10 text-green-400 border-green-500/15";
 };
 
-// ── Desktop: Droppable column wrapper ────────────────────────────────────────
+// ── Desktop: Droppable column wrapper ──────
 function DroppableColumn({ id, isOver, children }) {
   const { setNodeRef } = useDroppable({ id });
   return (
     <div
       ref={setNodeRef}
-      className={`flex flex-col gap-2.5 min-h-[60px] rounded-xl p-1 transition-colors duration-200 ${
-        isOver ? "bg-violet-500/[0.05]" : ""
+      className={`flex flex-col gap-2.5 min-h-15 rounded-xl p-1 transition-colors duration-200 ${
+        isOver ? "bg-violet-500/5" : ""
       }`}
     >
       {children}
@@ -44,7 +44,7 @@ function DroppableColumn({ id, isOver, children }) {
   );
 }
 
-// ── Desktop: Draggable task card ──────────────────────────────────────────────
+// ── Desktop: Draggable task card ────
 function DraggableCard({ task, isOwner, onEdit, onDelete }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({ id: task._id });
   const style = transform
@@ -57,14 +57,14 @@ function DraggableCard({ task, isOwner, onEdit, onDelete }) {
   );
 }
 
-// ── Move To Bottom Sheet (Mobile only) ───────────────────────────────────────
+// ── Move To Bottom Sheet for Mobile  ──────
 function MoveBottomSheet({ task, onMoveTo, onClose }) {
   const otherColumns = COLUMNS.filter((c) => c.status !== task.status);
 
   return (
     // Backdrop
     <div
-      className="fixed inset-0 z-[100] flex items-end justify-center"
+      className="fixed inset-0 z-100 flex items-end justify-center"
       onClick={onClose}
     >
       {/* Dark backdrop */}
@@ -72,7 +72,7 @@ function MoveBottomSheet({ task, onMoveTo, onClose }) {
 
       {/* Sheet */}
       <div
-        className="relative w-full max-w-lg bg-[#111118] border border-white/[0.08] rounded-t-2xl p-5 pb-8 shadow-2xl"
+        className="relative w-full max-w-lg bg-[#111118] borderborder-white/8 rounded-t-2xl p-5 pb-8 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Handle bar */}
@@ -87,7 +87,7 @@ function MoveBottomSheet({ task, onMoveTo, onClose }) {
             <button
               key={col.status}
               onClick={() => { onMoveTo(task._id, col.status); onClose(); }}
-              className={`w-full flex items-center justify-between px-4 py-3.5 rounded-xl border border-white/[0.06] bg-white/[0.03] active:bg-white/[0.08] transition-colors cursor-pointer`}
+              className={`w-full flex items-center justify-between px-4 py-3.5 rounded-xl border border-white/6 bg-white/3 active:bg-white/8 transition-colors cursor-pointer`}
             >
               <span className={`text-[14px] font-semibold ${col.color}`}>{col.title}</span>
               <ChevronRight className={`w-4 h-4 ${col.color}`} />
@@ -106,14 +106,14 @@ function MoveBottomSheet({ task, onMoveTo, onClose }) {
   );
 }
 
-// ── Shared Task Card UI ───────────────────────────────────────────────────────
+// ── Shared Task Card UI ─────
 function TaskCardUI({ task, isOwner, onEdit, onDelete, isDragging = false, onMoveTo = null }) {
   const [showSheet, setShowSheet] = useState(false);
 
   return (
     <>
       <div className={`group relative rounded-xl border bg-[#111118] p-4 transition-all duration-200 select-none
-        ${isDragging ? "border-violet-500/40 shadow-2xl shadow-black/60" : "border-white/[0.06] hover:border-white/15"}`}
+        ${isDragging ? "border-violet-500/40 shadow-2xl shadow-black/60" : "border-white/6 hover:border-white/15"}`}
       >
         {/* Priority + action buttons */}
         <div className="flex items-center justify-between mb-2">
@@ -156,7 +156,7 @@ function TaskCardUI({ task, isOwner, onEdit, onDelete, isDragging = false, onMov
           {task.description}
         </p>
 
-        <div className="border-t border-white/[0.04] my-3" />
+        <div className="border-t border-white/4 my-3" />
 
         {/* Footer */}
         <div className="flex items-center justify-between text-white/30 text-[11px]">
@@ -193,10 +193,10 @@ function TaskCardUI({ task, isOwner, onEdit, onDelete, isDragging = false, onMov
   );
 }
 
-// ── Main Component ────────────────────────────────────────────────────────────
+// ── Main Component ────
 function KanbanBoard() {
   const { projectId } = useParams();
-  const navigate       = useNavigate(); // ✅ yeh add karo
+  const navigate       = useNavigate(); //
   const { user }      = useContext(AuthContext);
 
   const [tasks, setTasks]               = useState([]);
@@ -225,12 +225,12 @@ function KanbanBoard() {
 
   const socketRef = useRef(null);
 
-  // ── dnd-kit sensors (desktop only) ───────────────────────────────────────
+  // ── dnd-kit sensors for desktop only ───────────
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
   );
 
-  // ── Socket ────────────────────────────────────────────────────────────────
+  // ── Socket ka code ──────
   useEffect(() => {
     if (socketRef.current?.connected) return;
     socketRef.current = io(API_BASE_URL, {
@@ -260,7 +260,7 @@ function KanbanBoard() {
       setTasks((prev) => prev.filter((t) => t._id !== data.taskId));
     });
 
-     // ✅ NAYA — agar project hi delete ho gaya toh dashboard pe bhej do
+     // agar project hi delete ho gaya toh dashboard pe bhej do
     socket.on("project-deleted", (data) => {
       if (data.projectId === projectId) {
         alert("This project has been deleted by the owner.");
@@ -272,12 +272,12 @@ function KanbanBoard() {
       socket.off("connect"); socket.off("disconnect");
       socket.off("task-updated"); socket.off("task-added");
       socket.off("task-edited"); socket.off("task-deleted");
-       socket.off("project-deleted"); // ✅ yeh add karo
+       socket.off("project-deleted"); 
       socket.disconnect();
     };
   }, [projectId]);
 
-  // ── Fetch ─────────────────────────────────────────────────────────────────
+  // ── Fetch ────
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -311,7 +311,7 @@ function KanbanBoard() {
     } catch (err) { console.error("Move failed:", err); setTasks(original); }
   };
 
-  // ── Desktop DnD handlers ──────────────────────────────────────────────────
+  // ── Desktop DnD handlers ───────
   const handleDragStart = ({ active }) => setActiveTaskId(active.id);
   const handleDragOver  = ({ over })   => setOverColumnId(over?.id || null);
   const handleDragEnd   = ({ active, over }) => {
@@ -321,7 +321,7 @@ function KanbanBoard() {
     if (task && task.status !== over.id) moveTask(active.id, over.id);
   };
 
-  // ── Create task ───────────────────────────────────────────────────────────
+  // ── Create task ────────
   const handleAddTask = async (e) => {
     e.preventDefault();
     if (!newTitle.trim()) return;
@@ -345,7 +345,7 @@ function KanbanBoard() {
     } catch (err) { console.error("Create error:", err.response?.data || err); }
   };
 
-  // ── Edit task ─────────────────────────────────────────────────────────────
+  // ── Edit task ───────
   const openEditModal = (task) => {
     setEditingTask(task); setEditTitle(task.title);
     setEditDesc(task.description || ""); setEditPriority(task.priority || "medium");
@@ -373,7 +373,7 @@ function KanbanBoard() {
     } catch (err) { console.error("Edit error:", err.response?.data || err); }
   };
 
-  // ── Delete task ───────────────────────────────────────────────────────────
+  // ── Delete task ──────
   const handleDeleteTask = async (taskId) => {
     if (!window.confirm("Delete this task?")) return;
     const original = [...tasks];
@@ -385,7 +385,7 @@ function KanbanBoard() {
     } catch (err) { console.error("Delete error:", err); setTasks(original); }
   };
 
-  // ── Invite ────────────────────────────────────────────────────────────────
+  // ── Invite ───────
   const handleInviteUser = async (e) => {
     e.preventDefault();
     if (!inviteEmail.trim()) return;
@@ -408,7 +408,7 @@ function KanbanBoard() {
   return (
     <div className="min-h-screen bg-[#0a0a0f] font-sans text-white relative">
       <Sidebar />
-      <div className="md:pl-[240px]">
+      <div className="md:pl-60">
         <Navbar pageTitle="Sprint Board" />
         <main className="p-4 md:p-6 flex flex-col h-[calc(100vh-60px)]">
 
@@ -425,7 +425,7 @@ function KanbanBoard() {
             </div>
             {isOwner && (
               <div className="flex items-center gap-2">
-                <button onClick={() => setIsInviteModalOpen(true)} className="hidden sm:inline-flex items-center gap-1.5 text-[12px] font-semibold bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.05] text-white px-3.5 py-2 rounded-xl transition-all cursor-pointer">
+                <button onClick={() => setIsInviteModalOpen(true)} className="hidden sm:inline-flex items-center gap-1.5 text-[12px] font-semibold bg-white/5 hover:bg-white/10 border border-white/5 text-white px-3.5 py-2 rounded-xl transition-all cursor-pointer">
                   Invite Team
                 </button>
                 <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-1.5 text-[12px] font-semibold bg-violet-600 hover:bg-violet-500 text-white px-3 md:px-3.5 py-2 rounded-xl transition-colors cursor-pointer shadow-lg shadow-violet-900/20">
@@ -442,12 +442,12 @@ function KanbanBoard() {
           ) : (
             <>
               {/* ════════════════════════════════════════════════════════════
-                  MOBILE — Tab view + "Move To" button (no drag needed)
+                  MOBILE — Tab view + "Move To" button
               ════════════════════════════════════════════════════════════ */}
               <div className="md:hidden flex flex-col flex-1 min-h-0">
 
                 {/* Tab bar */}
-                <div className="flex border-b border-white/[0.06] mb-4 overflow-x-auto">
+                <div className="flex border-b border-white/6 mb-4 overflow-x-auto">
                   {COLUMNS.map((col) => {
                     const count    = tasks.filter((t) => t.status === col.status).length;
                     const isActive = activeTab === col.status;
@@ -462,8 +462,8 @@ function KanbanBoard() {
                         {col.title}
                         <span className={`text-[10px] px-1.5 py-0.5 rounded-md border ${
                           isActive
-                            ? "bg-white/[0.06] border-white/[0.08] text-white/50"
-                            : "bg-white/[0.02] border-white/[0.04] text-white/20"
+                            ? "bg-white/[0.06]border-white/8 text-white/50"
+                            : "bg-white/2 border-white/4 text-white/20"
                         }`}>{count}</span>
                       </button>
                     );
@@ -473,7 +473,7 @@ function KanbanBoard() {
                 {/* Task list for active tab */}
                 <div className="flex-1 overflow-y-auto space-y-2.5 pb-4">
                   {tasks.filter((t) => t.status === activeTab).length === 0 ? (
-                    <div className="border border-dashed border-white/[0.04] rounded-xl py-16 text-center text-white/10 text-[11px] font-mono">
+                    <div className="border border-dashed border-white/4 rounded-xl py-16 text-center text-white/10 text-[11px] font-mono">
                       Empty Section
                     </div>
                   ) : (
@@ -508,13 +508,13 @@ function KanbanBoard() {
                       <div
                         key={col.status}
                         className={`flex flex-col max-h-full rounded-2xl border bg-[#111118]/40 p-4 transition-all duration-200 ${
-                          isGlowing ? "border-violet-500/30 bg-violet-500/[0.02]" : "border-white/[0.04]"
+                          isGlowing ? "border-violet-500/30 bg-violet-500/2" : "border-white/4"
                         }`}
                       >
                         <div className="flex items-center justify-between mb-4 px-1">
                           <div className="flex items-center gap-2">
                             <span className={`text-[12px] font-bold uppercase tracking-wider ${col.color}`}>{col.title}</span>
-                            <span className="text-[11px] font-mono text-white/20 bg-white/[0.03] border border-white/[0.05] px-1.5 py-0.5 rounded-md">
+                            <span className="text-[11px] font-mono text-white/20 bg-white/3 border border-white/5 px-1.5 py-0.5 rounded-md">
                               {colTasks.length}
                             </span>
                           </div>
@@ -531,7 +531,7 @@ function KanbanBoard() {
                             />
                           ))}
                           {colTasks.length === 0 && (
-                            <div className="border border-dashed border-white/[0.04] rounded-xl py-8 text-center text-white/10 text-[11px] font-mono">
+                            <div className="border border-dashed border-white/4 rounded-xl py-8 text-center text-white/10 text-[11px] font-mono">
                               Empty Section
                             </div>
                           )}
@@ -558,21 +558,21 @@ function KanbanBoard() {
       {/* CREATE TASK MODAL */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md rounded-2xl border border-white/[0.06] bg-[#111118] p-6 shadow-2xl relative">
+          <div className="w-full max-w-md rounded-2xl border border-white/6 bg-[#111118] p-6 shadow-2xl relative">
             <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors cursor-pointer"><X className="w-4 h-4" /></button>
             <h2 className="text-base font-bold text-white tracking-tight mb-4">Create New Sprint Task</h2>
             <form onSubmit={handleAddTask} className="space-y-4">
               <div>
                 <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/40 mb-1.5">Task Title</label>
-                <input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="e.g., Integrate Multer Storage" className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] px-4 py-2.5 text-[13px] text-white placeholder-white/20 outline-none focus:border-violet-500 transition-colors" required autoFocus />
+                <input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="e.g., Integrate Multer Storage" className="w-full rounded-xl bg-white/3 borderborder-white/8 px-4 py-2.5 text-[13px] text-white placeholder-white/20 outline-none focus:border-violet-500 transition-colors" required autoFocus />
               </div>
               <div>
                 <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/40 mb-1.5">Description</label>
-                <textarea value={newDesc} onChange={(e) => setNewDesc(e.target.value)} placeholder="Add scope details..." rows="3" className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] px-4 py-2.5 text-[13px] text-white placeholder-white/20 outline-none focus:border-violet-500 transition-colors resize-none" />
+                <textarea value={newDesc} onChange={(e) => setNewDesc(e.target.value)} placeholder="Add scope details..." rows="3" className="w-full rounded-xl bg-white/3 borderborder-white/8 px-4 py-2.5 text-[13px] text-white placeholder-white/20 outline-none focus:border-violet-500 transition-colors resize-none" />
               </div>
               <div>
                 <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/40 mb-1.5">Priority</label>
-                <select value={newPriority} onChange={(e) => setNewPriority(e.target.value)} className="w-full rounded-xl bg-[#111118] border border-white/[0.08] px-3 py-2.5 text-[13px] text-white outline-none focus:border-violet-500 transition-colors">
+                <select value={newPriority} onChange={(e) => setNewPriority(e.target.value)} className="w-full rounded-xl bg-[#111118] borderborder-white/8 px-3 py-2.5 text-[13px] text-white outline-none focus:border-violet-500 transition-colors">
                   <option value="low">Low (Green Track)</option>
                   <option value="medium">Medium (Amber Track)</option>
                   <option value="high">High (Red Track)</option>
@@ -587,7 +587,7 @@ function KanbanBoard() {
                     value={newDueDate}
                     onChange={(e) => setNewDueDate(e.target.value)}
                     min={new Date().toISOString().split("T")[0]}
-                    className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] px-4 py-2.5 text-[13px] text-white outline-none focus:border-violet-500 transition-colors [color-scheme:dark]"
+                    className="w-full rounded-xl bg-white/3 borderborder-white/8 px-4 py-2.5 text-[13px] text-white outline-none focus:border-violet-500 transition-colors scheme-dark"
                 />
               </div>
               <div className="flex justify-end gap-3 pt-2">
@@ -602,14 +602,14 @@ function KanbanBoard() {
       {/* INVITE MODAL */}
       {isInviteModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-sm rounded-2xl border border-white/[0.06] bg-[#111118] p-6 shadow-2xl relative">
+          <div className="w-full max-w-sm rounded-2xl border border-white/6 bg-[#111118] p-6 shadow-2xl relative">
             <button onClick={() => { setIsInviteModalOpen(false); setInviteMessage({ text: "", type: "" }); }} className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors cursor-pointer"><X className="w-4 h-4" /></button>
             <h2 className="text-base font-bold text-white tracking-tight mb-1">Invite Team Member</h2>
             <p className="text-[12px] text-white/40 mb-5">Add developers to this sprint workspace.</p>
             <form onSubmit={handleInviteUser} className="space-y-4">
               <div>
                 <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/40 mb-1.5">User Email</label>
-                <input type="email" value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} placeholder="dev@team.com" className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] px-4 py-2.5 text-[13px] text-white placeholder-white/20 outline-none focus:border-violet-500 transition-colors" required />
+                <input type="email" value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} placeholder="dev@team.com" className="w-full rounded-xl bg-white/3 borderborder-white/8 px-4 py-2.5 text-[13px] text-white placeholder-white/20 outline-none focus:border-violet-500 transition-colors" required />
               </div>
               {inviteMessage.text && (
                 <div className={`text-[12px] px-3 py-2 rounded-lg border ${inviteMessage.type === "error" ? "bg-red-500/10 border-red-500/20 text-red-400" : inviteMessage.type === "success" ? "bg-green-500/10 border-green-500/20 text-green-400" : "bg-blue-500/10 border-blue-500/20 text-blue-400"}`}>
@@ -625,21 +625,21 @@ function KanbanBoard() {
       {/* EDIT MODAL */}
       {isEditModalOpen && editingTask && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md rounded-2xl border border-white/[0.06] bg-[#111118] p-6 shadow-2xl relative">
+          <div className="w-full max-w-md rounded-2xl border border-white/6 bg-[#111118] p-6 shadow-2xl relative">
             <button onClick={() => { setIsEditModalOpen(false); setEditingTask(null); }} className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors cursor-pointer"><X className="w-4 h-4" /></button>
             <h2 className="text-base font-bold text-white tracking-tight mb-4">Edit Task</h2>
             <form onSubmit={handleEditTask} className="space-y-4">
               <div>
                 <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/40 mb-1.5">Task Title</label>
-                <input type="text" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] px-4 py-2.5 text-[13px] text-white outline-none focus:border-violet-500 transition-colors" required autoFocus />
+                <input type="text" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} className="w-full rounded-xl bg-white/3 borderborder-white/8 px-4 py-2.5 text-[13px] text-white outline-none focus:border-violet-500 transition-colors" required autoFocus />
               </div>
               <div>
                 <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/40 mb-1.5">Description</label>
-                <textarea value={editDesc} onChange={(e) => setEditDesc(e.target.value)} rows="3" className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] px-4 py-2.5 text-[13px] text-white outline-none focus:border-violet-500 transition-colors resize-none" />
+                <textarea value={editDesc} onChange={(e) => setEditDesc(e.target.value)} rows="3" className="w-full rounded-xl bg-white/3 borderborder-white/8 px-4 py-2.5 text-[13px] text-white outline-none focus:border-violet-500 transition-colors resize-none" />
               </div>
               <div>
                 <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/40 mb-1.5">Priority</label>
-                <select value={editPriority} onChange={(e) => setEditPriority(e.target.value)} className="w-full rounded-xl bg-[#111118] border border-white/[0.08] px-3 py-2.5 text-[13px] text-white outline-none focus:border-violet-500 transition-colors">
+                <select value={editPriority} onChange={(e) => setEditPriority(e.target.value)} className="w-full rounded-xl bg-[#111118] borderborder-white/8 px-3 py-2.5 text-[13px] text-white outline-none focus:border-violet-500 transition-colors">
                   <option value="low">Low (Green Track)</option>
                   <option value="medium">Medium (Amber Track)</option>
                   <option value="high">High (Red Track)</option>
@@ -654,7 +654,7 @@ function KanbanBoard() {
                     value={editDueDate}
                     onChange={(e) => setEditDueDate(e.target.value)}
                     min={new Date().toISOString().split("T")[0]}
-                    className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] px-4 py-2.5 text-[13px] text-white outline-none focus:border-violet-500 transition-colors [color-scheme:dark]"
+                    className="w-full rounded-xl bg-white/3 borderborder-white/8 px-4 py-2.5 text-[13px] text-white outline-none focus:border-violet-500 transition-colors scheme-dark"
                 />
               </div>
               <div className="flex justify-end gap-3 pt-2">

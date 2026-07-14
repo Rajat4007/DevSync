@@ -31,11 +31,11 @@ function Landing() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-[#0a0a0f]/90 backdrop-blur-xl border-b border-white/[0.06] shadow-2xl shadow-black/40"
+            ? "bg-[#0a0a0f]/90 backdrop-blur-xl border-bborder-white/6 shadow-2xl shadow-black/40"
             : "bg-transparent"
         }`}
       >
-        <div className="max-w-6xl mx-auto px-5 sm:px-8 h-[60px] flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-5 sm:px-8 h-15 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-lg bg-violet-600 flex items-center justify-center">
@@ -68,11 +68,11 @@ function Landing() {
             </button>
           </div>
 
-          {/* Auth buttons — always visible, sticky with nav */}
+          {/* Auth buttons  */}
           <div className="flex items-center gap-2.5">
             <Link
               to="/login"
-              className="hidden sm:inline-flex items-center text-[13px] font-medium text-white/60 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/[0.06] transition-all"
+              className="hidden sm:inline-flex items-center text-[13px] font-medium text-white/60 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/6 transition-all"
             >
               Sign In
             </Link>
@@ -99,7 +99,7 @@ function Landing() {
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div className="md:hidden border-t border-white/[0.06] bg-[#0a0a0f]/95 backdrop-blur-xl px-5 py-4 flex flex-col gap-3 text-[13px] font-medium text-white/60">
+          <div className="md:hidden border-tborder-white/6 bg-[#0a0a0f]/95 backdrop-blur-xl px-5 py-4 flex flex-col gap-3 text-[13px] font-medium text-white/60">
                 <button onClick={() => scrollToSection('features')} className="hover:text-white transition-colors bg-transparent border-0 text-[13px] font-medium text-white/50 cursor-pointer">
                     Features
                 </button>
@@ -119,7 +119,7 @@ function Landing() {
         )}
       </nav>
 
-      {/* ── HERO ────────────────────────────────────────────────────── */}
+      
       <section className="relative pt-36 pb-24 px-5 sm:px-8 overflow-hidden">
         {/* Background grid */}
         <div
@@ -131,7 +131,7 @@ function Landing() {
           }}
         />
         {/* Subtle color blob */}
-        <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[720px] h-[320px] -z-10 rounded-full bg-violet-700/10 blur-[100px]" />
+        <div className="absolute top-16 left-1/2 -translate-x-1/2 w-180 h-80 -z-10 rounded-full bg-violet-700/10 blur-[100px]" />
 
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
@@ -161,7 +161,7 @@ function Landing() {
             </Link>
             <Link
               to="/login"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 text-white/60 hover:text-white text-[14px] font-medium px-7 py-3 rounded-xl border border-white/10 hover:border-white/20 hover:bg-white/[0.04] transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 text-white/60 hover:text-white text-[14px] font-medium px-7 py-3 rounded-xl border border-white/10 hover:border-white/20 hover:bg-white/4 transition-all"
             >
               View live demo
             </Link>
@@ -175,9 +175,9 @@ function Landing() {
 
         {/* Hero mock window */}
         <div className="relative max-w-4xl mx-auto mt-16">
-          <div className="rounded-2xl border border-white/[0.08] bg-[#111118] overflow-hidden shadow-2xl shadow-black/60">
+          <div className="rounded-2xl border border-white/8 bg-[#111118] overflow-hidden shadow-2xl shadow-black/60">
             {/* Window chrome */}
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06] bg-[#0e0e15]">
+            <div className="flex items-center gap-2 px-4 py-3 border-bborder-white/6 bg-[#0e0e15]">
               <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
               <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
               <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
@@ -226,7 +226,7 @@ function Landing() {
                     {cards.map((c) => (
                       <div
                         key={c}
-                        className="rounded-lg bg-white/[0.04] border border-white/[0.06] px-3 py-2.5 text-[11px] text-white/70 hover:bg-white/[0.07] transition-colors cursor-default"
+                        className="rounded-lg bg-white/4 borderborder-white/6 px-3 py-2.5 text-[11px] text-white/70 hover:bg-white/[0.07] transition-colors cursor-default"
                       >
                         {c}
                       </div>
@@ -241,9 +241,9 @@ function Landing() {
         </div>
       </section>
 
-      {/* ── STATS BAR ───────────────────────────────────────────────── */}
-      <section className="border-y border-white/[0.06] bg-white/[0.015]">
-        <div className="max-w-4xl mx-auto px-5 py-6 grid grid-cols-3 divide-x divide-white/[0.06]">
+      {/* ── STATS BAR ─── */}
+      <section className="border-yborder-white/6 bg-white/1.15">
+        <div className="max-w-4xl mx-auto px-5 py-6 grid grid-cols-3 divide-x divide-white/6">
           {[
             { val: "Socket.io", label: "Real-time sync engine" },
             { val: "RBAC", label: "Role-based access control" },
@@ -261,7 +261,7 @@ function Landing() {
         </div>
       </section>
 
-      {/* ── FEATURES ────────────────────────────────────────────────── */}
+      {/* ── FEATURES ───*/}
       <section id="features" className="max-w-6xl mx-auto px-5 sm:px-8 py-24">
         <div className="mb-14">
           <p className="text-[12px] font-semibold uppercase tracking-widest text-violet-400 mb-3">
@@ -313,7 +313,7 @@ function Landing() {
           ].map(({ icon, title, body, tag }) => (
             <div
               key={title}
-              className="group relative rounded-2xl border border-white/[0.07] bg-white/[0.025] p-6 hover:border-violet-500/30 hover:bg-violet-500/[0.03] transition-all duration-300"
+              className="group relative rounded-2xl border border-white/[0.07] bg-white/2.5 p-6 hover:border-violet-500/30 hover:bg-violet-500/3 transition-all duration-300"
             >
               <div className="w-9 h-9 rounded-lg bg-violet-600/15 border border-violet-500/20 text-violet-400 flex items-center justify-center mb-4 group-hover:bg-violet-600 group-hover:text-white group-hover:border-transparent transition-all duration-300">
                 {icon}
@@ -337,7 +337,7 @@ function Landing() {
       {/* ── WORKFLOW ────────────────────────────────────────────────── */}
       <section
         id="workflow"
-        className="border-t border-white/[0.06] bg-white/[0.01]"
+        className="border-tborder-white/6 bg-white/1"
       >
         <div className="max-w-4xl mx-auto px-5 sm:px-8 py-24">
           <div className="text-center mb-14">
@@ -377,9 +377,9 @@ function Landing() {
               >
                 {/* Line connector */}
                 {i < arr.length - 1 && (
-                  <div className="absolute left-[19px] top-10 bottom-0 w-px bg-white/[0.06]" />
+                  <div className="absolute left-4.75 top-10 bottom-0 w-px bg-white/6" />
                 )}
-                <div className="shrink-0 w-10 h-10 rounded-full border border-white/10 bg-white/[0.03] flex items-center justify-center text-[11px] font-bold text-white/30 z-10">
+                <div className="shrink-0 w-10 h-10 rounded-full border border-white/10 bg-white/3 flex items-center justify-center text-[11px] font-bold text-white/30 z-10">
                   {n}
                 </div>
                 <div className="pt-1.5">
@@ -396,8 +396,8 @@ function Landing() {
         </div>
       </section>
 
-      {/* ── TECH STACK ──────────────────────────────────────────────── */}
-      <section id="stack" className="border-t border-white/[0.06]">
+      {/* ── TECH STACK ── */}
+      <section id="stack" className="border-tborder-white/6">
         <div className="max-w-4xl mx-auto px-5 sm:px-8 py-16 text-center">
           <p className="text-[12px] font-semibold uppercase tracking-widest text-white/25 mb-6">
             Built with
@@ -416,7 +416,7 @@ function Landing() {
             ].map((tech) => (
               <span
                 key={tech}
-                className="px-3.5 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] text-[12px] font-medium text-white/50 hover:text-white hover:border-white/20 transition-all"
+                className="px-3.5 py-1.5 rounded-full border border-white/8 bg-white/3 text-[12px] font-medium text-white/50 hover:text-white hover:border-white/20 transition-all"
               >
                 {tech}
               </span>
@@ -425,8 +425,8 @@ function Landing() {
         </div>
       </section>
 
-      {/* ── CTA ─────────────────────────────────────────────────────── */}
-      <section className="border-t border-white/[0.06]">
+      {/* ── CTA ──── */}
+      <section className="border-tborder-white/6">
         <div className="max-w-3xl mx-auto px-5 sm:px-8 py-28 text-center">
           <h2 className="text-[clamp(1.8rem,4vw,2.6rem)] font-extrabold tracking-tight text-white mb-4 leading-snug">
             Ship smarter with your team.
@@ -448,8 +448,8 @@ function Landing() {
         </div>
       </section>
 
-      {/* ── FOOTER ──────────────────────────────────────────────────── */}
-      <footer className="border-t border-white/[0.06] py-7 px-5">
+      {/* ── FOOTER ──── */}
+      <footer className="border-tborder-white/6 py-7 px-5">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <div className="w-5 h-5 rounded-md bg-violet-600 flex items-center justify-center">

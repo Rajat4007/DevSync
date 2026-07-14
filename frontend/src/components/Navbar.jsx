@@ -15,11 +15,11 @@ function Navbar({ pageTitle }) {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const notificationRef = useRef(null);
 
-  // 1. Asli Notifications State
+  // 1. Notifications State
   const [notifications, setNotifications] = useState([]);
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
-    // 👇 YEH SOCKET WALA USE-EFFECT ADD KARO 👇
+  
   useEffect(() => {
     if (!user) return;
 
@@ -108,18 +108,6 @@ function Navbar({ pageTitle }) {
     }
   };
 
-  // 🔥 Temporary function for testing
-  // const sendTestNotification = async () => {
-  //   try {
-  //     await axios.post(`${API_BASE_URL}/api/notifications/test`, {}, {
-  //       headers: { Authorization: `Bearer ${user.token}` },
-  //     });
-  //     fetchNotifications(); // Nayi notif aane ke baad list refresh kar do
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   // Click outside logic
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -144,21 +132,14 @@ function Navbar({ pageTitle }) {
   };
 
   return (
-    <header className="h-[60px] border-b border-white/[0.05] bg-[#0a0a0f]/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-40">
+    <header className="h-15 border-b border-white/5 bg-[#0a0a0f]/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-40">
       <h2 className="text-[15px] font-bold text-white tracking-wide">
         {pageTitle || "Dashboard"}
       </h2>
 
       <div className="flex items-center gap-4">
-        
-        {/* ── TEMPORARY MAGIC BUTTON ── */}
-        {/* <button 
-          onClick={sendTestNotification}
-          className="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded hover:bg-green-500/30 transition-colors"
-        >
-          + Add Test
-        </button> */}
-        {/* ── NOTIFICATION LOGIC ── */}
+  
+        {/* ── NOTIFICATION KA LOGIC ── */}
         <div className="relative" ref={notificationRef}>
           <button
             onClick={() => {
@@ -174,8 +155,8 @@ function Navbar({ pageTitle }) {
           </button>
 
           {isNotificationOpen && (
-            <div className="absolute right-0 mt-3 w-80 bg-[#111118] border border-white/[0.08] rounded-xl shadow-2xl z-50 overflow-hidden flex flex-col">
-              <div className="px-4 py-3 border-b border-white/[0.04] bg-white/[0.02] flex justify-between items-center">
+            <div className="absolute right-0 mt-3 w-80 bg-[#111118] border border-white/8 rounded-xl shadow-2xl z-50 overflow-hidden flex flex-col">
+              <div className="px-4 py-3 border-b border-white/4 bg-white/2 flex justify-between items-center">
                 <span className="text-[13px] font-bold text-white flex items-center gap-2">
                   Notifications 
                   {unreadCount > 0 && (
@@ -191,16 +172,16 @@ function Navbar({ pageTitle }) {
                 )}
               </div>
 
-              <div className="max-h-[300px] overflow-y-auto custom-scrollbar">
+              <div className="max-h-75 overflow-y-auto custom-scrollbar">
                 {notifications.length === 0 ? (
                   <div className="p-6 text-center text-white/40 text-[12px]">
-                    All caught up! No new notifications. 🚀
+                    All caught up! No new notifications.
                   </div>
                 ) : (
                   notifications.map((notif) => (
                     <div 
                       key={notif._id} 
-                      className={`px-4 py-3 border-b border-white/[0.02] hover:bg-white/[0.02] transition-colors group relative ${!notif.isRead ? 'bg-violet-500/5' : ''}`}
+                      className={`px-4 py-3 border-b border-white/2 hover:bg-white/2 transition-colors group relative ${!notif.isRead ? 'bg-violet-500/5' : ''}`}
                     >
                       <div className="flex gap-3">
                         <div className="mt-0.5">
@@ -238,7 +219,7 @@ function Navbar({ pageTitle }) {
           )}
         </div>
 
-        <div className="w-[1px] h-4 bg-white/10 mx-1"></div>
+        <div className="w-px h-4 bg-white/10 mx-1"></div>
 
         {/* ── PROFILE & DROPDOWN ── */}
         <div className="relative" ref={dropdownRef}>
@@ -247,7 +228,7 @@ function Navbar({ pageTitle }) {
               setIsProfileOpen(!isProfileOpen);
               setIsNotificationOpen(false);
             }}
-            className="flex items-center gap-2 hover:bg-white/[0.05] p-1 pr-2 rounded-full transition-colors cursor-pointer"
+            className="flex items-center gap-2 hover:bg-white/5 p-1 pr-2 rounded-full transition-colors cursor-pointer"
           >
             <div className="w-7 h-7 rounded-full bg-blue-500 flex items-center justify-center text-white overflow-hidden border-2 border-transparent hover:border-blue-400 transition-all">
               {user?.profilePic ? (
@@ -264,8 +245,8 @@ function Navbar({ pageTitle }) {
           </button>
 
           {isProfileOpen && (
-            <div className="absolute right-0 mt-3 w-56 bg-[#111118] border border-white/[0.08] rounded-xl shadow-2xl py-1 z-50 overflow-hidden">
-              <div className="px-4 py-3 border-b border-white/[0.04] bg-white/[0.02]">
+            <div className="absolute right-0 mt-3 w-56 bg-[#111118] border border-white/8 rounded-xl shadow-2xl py-1 z-50 overflow-hidden">
+              <div className="px-4 py-3 border-b border-white/4 bg-white/2">
                 <p className="text-[13px] font-bold text-white truncate">
                   {user?.name || "Developer"}
                 </p>
@@ -277,19 +258,19 @@ function Navbar({ pageTitle }) {
               <div className="py-1">
                 <button
                   onClick={() => { navigate("/profile"); setIsProfileOpen(false); }}
-                  className="w-full px-4 py-2 text-left flex items-center gap-2 text-[12px] text-white/60 hover:text-white hover:bg-white/[0.03] transition-colors cursor-pointer"
+                  className="w-full px-4 py-2 text-left flex items-center gap-2 text-[12px] text-white/60 hover:text-white hover:bg-white/3 transition-colors cursor-pointer"
                 >
                   <User className="w-3.5 h-3.5" /> My Profile
                 </button>
                 <button 
                   onClick={() => { navigate("/settings"); setIsProfileOpen(false); }}
-                  className="w-full px-4 py-2 text-left flex items-center gap-2 text-[12px] text-white/60 hover:text-white hover:bg-white/[0.03] transition-colors cursor-pointer"
+                  className="w-full px-4 py-2 text-left flex items-center gap-2 text-[12px] text-white/60 hover:text-white hover:bg-white/3 transition-colors cursor-pointer"
                 >
                   <Settings className="w-3.5 h-3.5" /> Account Settings
                 </button>
               </div>
 
-              <div className="border-t border-white/[0.04] py-1">
+              <div className="border-t border-white/4 py-1">
                 <button
                   onClick={handleLogout}
                   className="w-full px-4 py-2 text-left flex items-center gap-2 text-[12px] text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer font-medium"

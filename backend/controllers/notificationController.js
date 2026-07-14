@@ -41,22 +41,11 @@ const deleteNotification = async (req, res) => {
   }
 };
 
-const createTestNotification = async (req, res) => {
-  try {
-    const newNotif = await Notification.create({
-      user: req.user._id,
-      text: "Bhai yeh ek nayi test notification hai! 🚀 " + Math.floor(Math.random() * 100),
-    });
-    res.status(201).json(newNotif);
-  } catch (error) {
-    res.status(500).json({ message: "Error creating test notification" });
-  }
-};
+
 
 module.exports = {
   getNotifications,
   markAsRead,
   markAllAsRead,
   deleteNotification,
-  createTestNotification,
 };

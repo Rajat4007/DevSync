@@ -6,7 +6,7 @@ require('dotenv').config({ path: __dirname + '/.env' });
 
 
 const connectDB = require('./config/db');
-const authRoutes = require('./routes/authRoutes'); // ◄--- Route import kiya
+const authRoutes = require('./routes/authRoutes'); 
 const projectRoutes = require('./routes/projectRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
@@ -27,7 +27,7 @@ const io = new Server(server,{
 // Database se connect karein
 connectDB();
 
-// 🔥 YEH MIDDLEWARE ADD KARO: Ab kisi bhi controller mein req.io use kar sakte ho!
+// ye middleware add kiye taki  Ab kisi bhi controller mein req.io use kar sake
 app.use((req, res, next) => {
     req.io = io;
     next();
@@ -37,31 +37,33 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(express.json());
 
-// ⚙️ API Routes Mount Karein
-app.use('/api/auth', authRoutes); // ◄--- Ab saare auth routes /api/auth se shuru honge
+//  API Routes Mount Karein
+app.use('/api/auth', authRoutes); //Ab saare auth routes /api/auth se shuru honge
 app.use('/api/projects',projectRoutes);
 app.use('/api/tasks',taskRoutes);
 app.use('/api/notifications', notificationRoutes)
 
 // Simple Test Route
 app.get('/', (req, res) => {
-    res.send('DevSync Backend Server is Running Successfully!');
+    res.json({ 
+        status: 'ok',
+        message: 'DevSync API is running',
+        version: '1.0.0'
+    });
 });
 
 // 🔌 3. SOCKET.IO CONNECTION LOGIC (Radio Station)
 io.on('connection', (socket) => {
-    console.log(`⚡ A user connected: ${socket.id}`);
+    
 
-    // 👇 YEH NAYA EVENT ADD KARO: User ko uske khud ke personal room mein daalna
+    //  User ko uske khud ke personal room mein daalna
     socket.on('join-user', (userId) => {
         socket.join(userId);
-        console.log(`👤 User joined their personal room: ${userId}`);
     });
 
     // User jab kisi project page par aayega, toh wo us project ke "Room" mein join ho jayega
     socket.on('join-project', (projectId) => {
         socket.join(projectId);
-        console.log(`📁 User joined project room: ${projectId}`);
     });
 
     // Jab koi task move hoga, frontend is event ko fire karega
@@ -69,36 +71,31 @@ io.on('connection', (socket) => {
         // data mein hoga: { projectId, taskId, newStatus }
         // Yeh line us project room mein baithe baaki sabhi users ko notification bhej degi
         socket.to(data.projectId).emit('task-updated', data);
-        console.log(`🔄 Task ${data.taskId} moved to ${data.newStatus} in project ${data.projectId}`);
     });
+
+
     // jab koi task create hoga tb ye chalega
     socket.on('task-created',(data)=>{
         // data mein hoga: { projectId, task }
         // Yeh us project room ke baaki sabhi users ko naya task bhej dega
         socket.to(data.projectId).emit('task-added',data);
-        console.log(`➕ New task "${data.task.title}" broadcasted in project ${data.projectId}`);
-        
     });
     
     // jab koi task update hoga toh ye chalega
     socket.on('task-edited' , (data)=>{
         socket.to(data.projectId).emit('task-edited' , data);
-        console.log(`🔄 Task ${data.taskId} edited in project ${data.projectId}`);
     });
     
     //jab koi task delete hoga tb ye run krga
     socket.on('task-deleted', (data) => { 
         socket.to(data.projectId).emit('task-deleted',data);
-        console.log(`🔄 Task ${data.taskId} deleted in project ${data.projectId}`);
-     })
+    });
 
     // Jab user browser band karega
-    socket.on('disconnect', () => {
-        console.log(`❌ User disconnected: ${socket.id}`);
-    });
+    socket.on('disconnect', () => {});
 });
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`🚀 Server is blasting off on port ${PORT}`);
+    console.log(`Server is blasting off on port ${PORT}`);
 });

@@ -24,14 +24,14 @@ function Profile() {
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (!file || !file.type.startsWith("image/")) {
-      alert("Bhai, sirf image upload kar sakte ho!");
+      alert("Only Image can be uploaded");
       return;
     }
 
     try {
       setIsUploading(true); // Compression shuru hote hi loader ghuma do
 
-      // 🔥 MAGIC STEP: Image ko chota karna
+      //  Image ko chota karna
       const options = {
         maxSizeMB: 0.5, // 500KB se badi file nahi jayegi
         maxWidthOrHeight: 800, // Resolution max 800px (Profile pic ke liye bohot hai)
@@ -59,7 +59,7 @@ function Profile() {
       localStorage.setItem("userInfo", JSON.stringify(newUserInfo));
       if (setUser) setUser(newUserInfo);
       
-      alert("Profile picture updated at bullet speed! ⚡");
+      alert("Profile picture updated");
     } catch (error) {
       console.error(error);
       alert("Upload failed!");
@@ -70,7 +70,7 @@ function Profile() {
 
   // Photo Delete
   const handleImageDelete = async () => {
-    if (!window.confirm("Profile photo hatani hai?")) return;
+    if (!window.confirm("Do you want to remove Profile Photo")) return;
     try {
       setIsUploading(true);
       const res = await axios.delete(`${API_BASE_URL}/api/auth/delete-profile-pic`, {
@@ -89,7 +89,7 @@ function Profile() {
   // Update Name Only
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
-    if (!name.trim()) return alert("Name khaali nahi ho sakta!");
+    if (!name.trim()) return alert("Name cannot be empty");
 
     try {
       setIsSavingDetails(true);
@@ -99,10 +99,10 @@ function Profile() {
       const newUserInfo = { ...user, name: res.data.name };
       localStorage.setItem("userInfo", JSON.stringify(newUserInfo));
       if (setUser) setUser(newUserInfo);
-      alert("Profile updated successfully! 🔥");
+      alert("Profile updated successfully");
       navigate("/dashboard");
     } catch (error) {
-      alert("Profile update failed!");
+      alert("Profile update failed");
     } finally {
       setIsSavingDetails(false);
     }
@@ -110,7 +110,7 @@ function Profile() {
 
   return (
     <div className="min-h-[calc(100vh-60px)] bg-[#0a0a0f] text-white flex items-center justify-center p-6">
-      <div className="w-full max-w-md bg-[#111118] border border-white/[0.06] rounded-2xl p-8 shadow-xl">
+      <div className="w-full max-w-md bg-[#111118] border border-white/6 rounded-2xl p-8 shadow-xl">
         <h2 className="text-xl font-bold mb-6 text-center tracking-wide">My Profile</h2>
 
         <div className="flex flex-col items-center gap-4 mb-8">
@@ -139,14 +139,14 @@ function Profile() {
             <label className="text-xs text-white/40 block mb-1.5">Full Name</label>
             <div className="relative">
               <User className="w-4 h-4 text-white/30 absolute left-3 top-1/2 -translate-y-1/2" />
-              <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-white/[0.02] border border-white/[0.08] rounded-xl py-2.5 pl-10 pr-4 text-sm outline-none" />
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-white/2 border border-white/8 rounded-xl py-2.5 pl-10 pr-4 text-sm outline-none" />
             </div>
           </div>
           <div>
             <label className="text-xs text-white/40 block mb-1.5">Email Address</label>
             <div className="relative">
               <Mail className="w-4 h-4 text-white/30 absolute left-3 top-1/2 -translate-y-1/2" />
-              <input type="email" value={user?.email || ""} disabled className="w-full bg-white/[0.01] border border-white/[0.04] rounded-xl py-2.5 pl-10 pr-4 text-sm text-white/40 outline-none cursor-not-allowed" />
+              <input type="email" value={user?.email || ""} disabled className="w-full bg-white/1 border border-white/4 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white/40 outline-none cursor-not-allowed" />
             </div>
           </div>
           <button type="submit" disabled={isSavingDetails} className="w-full mt-2 flex items-center justify-center gap-2 py-2.5 bg-violet-600 hover:bg-violet-700 text-sm font-medium rounded-xl transition-all shadow-lg">

@@ -8,7 +8,7 @@ const Notification = require("../models/Notification");
 const createTask = async (req, res) => {
   const { title, description, project, assignedTo, dueDate, priority } =
     req.body;
-  console.log(req.body);
+  
 
   try {
     // 1. Check karo ki kya wo project sach mein exist karta hai
@@ -27,7 +27,7 @@ const createTask = async (req, res) => {
       dueDate,
     });
 
-    // 🔥 3. REAL-TIME TEAM NOTIFICATION YAHAN AAYEGI 🔥
+    //  3. REAL-TIME TEAM NOTIFICATION YAHAN AAYEGI 
     try {
       // Check karo ki members ka array hai ya nahi
       if (projectExists.members && projectExists.members.length > 0) {
@@ -45,7 +45,7 @@ const createTask = async (req, res) => {
 
           await Notification.insertMany(notificationsArray);
 
-          // Socket.io se saare members ko instant seeti bajao
+          // Socket.io se saare members ko instant update krdo 
           if (req.io) {
             membersToNotify.forEach((memberId) => {
               req.io.to(memberId.toString()).emit("new-notification");
@@ -103,7 +103,7 @@ const updateTaskStatus = async (req, res) => {
     const task = await Task.findByIdAndUpdate(
       req.params.id,
       { status },
-      { returnDocument: "after" }, // {new: true} se hume updated data return milta hai
+      { returnDocument: "after" },
     ).populate("project");
 
     if (!task) {
@@ -112,8 +112,6 @@ const updateTaskStatus = async (req, res) => {
     // notification send krna jb bhi task complete hojyga
     if (status === "Done" && task.project) {
       try {
-        // Dhyan rahe: Agar tumhare Project model mein owner ko 'createdBy' likha hai,
-        // toh 'task.project.owner' ki jagah 'task.project.createdBy' kar dena.
         const ownerId = task.project.owner.toString();
         const currentUserId = req.user._id.toString();
 
@@ -169,7 +167,7 @@ const deleteTask = async (req, res) => {
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
-    res.json({ message: "Task deleted succesfully", taskId: req.params.id });
+    res.json({ message: "Task deleted succesfully ", taskId: req.params.id });
   } catch (error) {
     res.status(500).json({ message: "server error", error: error.message });
   }

@@ -26,9 +26,9 @@ function Sidebar() {
   const [projects, setProjects] = useState([]);
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [projectsOpen, setProjectsOpen] = useState(true);
-  const [mobileOpen, setMobileOpen] = useState(false); // ← hamburger state
+  const [mobileOpen, setMobileOpen] = useState(false); 
 
-  const socketRef = useRef(null); // ✅ yeh line add karo — line 55 ke aas paas yahi missing thi
+  const socketRef = useRef(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -51,7 +51,7 @@ function Sidebar() {
     fetchProjects();
   }, []);
 
-  // ✅ NAYA — Socket setup: saare projects ke rooms join karo + delete listen karo
+  //  Socket setup: saare projects ke rooms join karo + delete listen karo
   useEffect(() => {
     if (!user) return;
 
@@ -60,7 +60,7 @@ function Sidebar() {
 
     socket.on("connect", () => {
       if (user?._id) {
-        socket.emit("join-user", user._id); // ✅ personal room join karo
+        socket.emit("join-user", user._id); 
       }
       projects.forEach((p) => socket.emit("join-project", p._id));
     });
@@ -70,7 +70,7 @@ function Sidebar() {
       setProjects((prev) => prev.filter((p) => p._id !== data.projectId));
     });
 
-    // ✅ NAYA — invite hone par naya project add ho jaye
+    // invite hone par naya project add ho jaye
     socket.on("project-added", (data) => {
       if (!data?.project?._id) return;
       setProjects((prev) =>
@@ -80,7 +80,7 @@ function Sidebar() {
       );
     });
 
-    // ✅ NAYA — Dashboard pe baithe member ke liye bhi project list se hatao
+    //Dashboard pe baithe member ke liye bhi project list se hatao
     socket.on("project-removed", (data) => {
       if (!data?.projectId) return;
       setProjects((prev) => prev.filter((p) => p._id !== data.projectId));
@@ -101,7 +101,7 @@ function Sidebar() {
   const SidebarContent = () => (
     <>
       {/* Branding */}
-      <div className="h-[60px] border-b border-white/[0.06] flex items-center justify-between px-6 shrink-0">
+      <div className="h-15 border-b border-white/6 flex items-center justify-between px-6 shrink-0">
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-lg bg-violet-600 flex items-center justify-center shadow-lg shadow-violet-900/40">
             <GitBranch className="w-4 h-4 text-white" />
@@ -128,7 +128,7 @@ function Sidebar() {
             `flex items-center gap-3 px-4 py-2.5 rounded-xl text-[13px] font-medium transition-colors duration-200 ${
               isActive
                 ? "bg-violet-600 text-white shadow-lg shadow-violet-900/20"
-                : "text-white/40 hover:text-white hover:bg-white/[0.03]"
+                : "text-white/40 hover:text-white hover:bg-white/3"
             }`
           }
         >
@@ -174,7 +174,7 @@ function Sidebar() {
                       `flex items-center gap-2.5 px-4 py-2 rounded-xl text-[12px] font-medium transition-colors duration-200 truncate ${
                         isActive
                           ? "bg-violet-600/20 text-violet-300 border border-violet-500/20"
-                          : "text-white/35 hover:text-white hover:bg-white/[0.03]"
+                          : "text-white/35 hover:text-white hover:bg-white/3"
                       }`
                     }
                   >
@@ -192,7 +192,7 @@ function Sidebar() {
                   navigate("/dashboard?new=true"); // ✅ query param se signal bhejo
                   handleNavClick();
                 }}
-                className="w-full flex items-center gap-2.5 px-4 py-2 rounded-xl text-[12px] font-medium text-white/20 hover:text-white/50 hover:bg-white/[0.02] transition-colors cursor-pointer"
+                className="w-full flex items-center gap-2.5 px-4 py-2 rounded-xl text-[12px] font-medium text-white/20 hover:text-white/50 hover:bg-white/2 transition-colors cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
                 New Project
@@ -201,31 +201,20 @@ function Sidebar() {
           )}
         </div>
       </div>
-
-      {/* Logout */}
-      {/* <div className="p-3 border-t border-white/[0.06] shrink-0">
-        <button
-          onClick={logout}
-          className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-[13px] font-medium text-red-400/70 hover:text-red-400 hover:bg-red-500/10 transition-colors duration-200 cursor-pointer"
-        >
-          <LogOut className="w-4 h-4" />
-          Sign Out
-        </button>
-      </div> */}
     </>
   );
 
   return (
     <>
       {/* ── DESKTOP SIDEBAR — always visible on md+ ── */}
-      <aside className="hidden md:flex w-[240px] border-r border-white/[0.06] bg-[#0e0e15] flex-col h-screen fixed top-0 left-0 z-50">
+      <aside className="hidden md:flex w-60 border-r border-white/6 bg-[#0e0e15] flex-col h-screen fixed top-0 left-0 z-50">
         <SidebarContent />
       </aside>
 
       {/* ── MOBILE: Hamburger button (top-left, inside Navbar area) ── */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="md:hidden fixed top-[14px] left-4 z-[60] w-8 h-8 flex items-center justify-center rounded-lg bg-[#0e0e15] border border-white/[0.08] text-white/60 hover:text-white transition-colors cursor-pointer"
+        className="md:hidden fixed top-3.5 left-4 z-60 w-8 h-8 flex items-center justify-center rounded-lg bg-[#0e0e15] border border-white/8 text-white/60 hover:text-white transition-colors cursor-pointer"
       >
         <Menu className="w-4 h-4" />
       </button>
@@ -233,14 +222,14 @@ function Sidebar() {
       {/* ── MOBILE: Backdrop ── */}
       {mobileOpen && (
         <div
-          className="md:hidden fixed inset-0 z-[55] bg-black/70 backdrop-blur-sm"
+          className="md:hidden fixed inset-0 z-55 bg-black/70 backdrop-blur-sm"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
       {/* ── MOBILE: Slide-in drawer ── */}
       <aside
-        className={`md:hidden fixed top-0 left-0 z-[60] h-screen w-[260px] bg-[#0e0e15] border-r border-white/[0.06] flex flex-col transform transition-transform duration-300 ease-in-out ${
+        className={`md:hidden fixed top-0 left-0 z-60 h-screen w-65 bg-[#0e0e15] border-r border-white/6 flex flex-col transform transition-transform duration-300 ease-in-out ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

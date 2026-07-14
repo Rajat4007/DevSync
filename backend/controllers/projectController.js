@@ -25,13 +25,13 @@ const createProject = async (req, res) => {
       members: [req.user._id], // By default owner bhi member list mein hoga
     });
 
-    // 🔥 2. REAL NOTIFICATION MAGIC YAHAN AAYEGA 🔥
+    //  2. REAL NOTIFICATION MAGIC YAHAN AAYEGA 
     await Notification.create({
       user: req.user._id, // Jisne project banaya usko alert jayega
       text: `New project '${project.name}' created successfully! 🎯`,
     });
 
-    // Owner ke personal room mein seeti bajao taaki uska dashboard update ho jaye
+    // Owner ke personal room mein alert do  taaki uska dashboard update ho jaye
     if (req.io) {
       const userId = req.user._id || req.user.id;
       req.io.to(String(userId)).emit("dashboard-updated");
@@ -228,7 +228,7 @@ const deleteProject = async (req, res) => {
     }
 
     const projectIdStr = req.params.id;
-    const memberIds = project.members.map((m) => String(m)); // ✅ delete se pehle list le lo
+    const memberIds = project.members.map((m) => String(m)); 
 
     await Task.deleteMany({ project: req.params.id });
     await project.deleteOne();
@@ -242,7 +242,7 @@ const deleteProject = async (req, res) => {
           .to(memberId)
           .emit("project-removed", { projectId: projectIdStr });
       });
-      console.log("--> Socket ne sabko bata diya project delete hua!");
+      
     }
 
     try {
@@ -270,7 +270,7 @@ const deleteProject = async (req, res) => {
   }
 };
 
-// 🔥 module.exports ko update karke isme getProjectStats bhi daal do:
+// module.exports ko update karke isme getProjectStats bhi daal do:
 module.exports = {
   createProject,
   getProjects,
