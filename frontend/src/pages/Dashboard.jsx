@@ -423,11 +423,11 @@ function Dashboard() {
             <h2 className="text-base font-bold text-white tracking-tight mb-4">Create New Project</h2>
             <form onSubmit={handleCreateProject} className="space-y-4">
               <div>
-                <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/40 mb-1.5">Project Name</label>
+                <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/40 mb-1.5">Project Name *</label>
                 <input type="text" value={newProjectName} onChange={(e) => setNewProjectName(e.target.value)} placeholder="e.g., DevSync Backend Sprint" className="w-full rounded-xl bg-white/3 border border-white/8 px-4 py-2.5 text-[13px] text-white placeholder-white/20 outline-none focus:border-violet-500 transition-colors" required autoFocus />
               </div>
               <div>
-                <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/40 mb-1.5">Description <span className="normal-case text-white/20 tracking-normal font-normal">(optional)</span></label>
+                <label className="block text-[11px] font-semibold uppercase tracking-wider text-white/40 mb-1.5">Description <span className="normal-case text-white/20 tracking-normal font-normal">(*)</span></label>
                 <textarea value={newProjectDesc} onChange={(e) => setNewProjectDesc(e.target.value)} placeholder="What is this project about?" rows="3" className="w-full rounded-xl bg-white/3 border border-white/8 px-4 py-2.5 text-[13px] text-white placeholder-white/20 outline-none focus:border-violet-500 transition-colors resize-none" />
               </div>
               <div className="flex justify-end gap-3 pt-2">

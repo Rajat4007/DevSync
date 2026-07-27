@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
+
 // Context Create kiya
 export const AuthContext = createContext();
 
@@ -8,6 +9,7 @@ export const AuthContext = createContext();
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
 export const AuthProvider = ({ children }) => {
+  
   
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -81,6 +83,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("userInfo");
     delete axios.defaults.headers.common["Authorization"];
     setUser(null);
+    window.location.href = '/';
   };
 
   return (

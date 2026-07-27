@@ -121,7 +121,7 @@ function Navbar({ pageTitle }) {
   const handleLogout = () => {
     if (logout) logout();
     else localStorage.removeItem("userInfo");
-    navigate("/login");
+    navigate("/");
     window.location.reload();
   };
 

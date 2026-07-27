@@ -35,7 +35,7 @@ function App() {
           <Route path='/settings' element={<ProtectedRoute><Settings/></ProtectedRoute>}/>
           
           {/** agr koi galat url dale toh automatically usko login pr le chalo */}
-          <Route path = '*' element = {<Navigate to='/login'/>} />
+          <Route path = '*' element = {<Navigate to='/'/>} />
 
         </Routes>
       </Router>
